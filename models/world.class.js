@@ -55,7 +55,7 @@ class World {
       this.addToMap(o);
     });
   }
-  addToMap(mo) {
+  addToMap(mo) {//Objekt mo auf Canvas(Bildschirm ausgeben)
     this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
   }
 
