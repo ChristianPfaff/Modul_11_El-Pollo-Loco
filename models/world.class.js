@@ -1,7 +1,7 @@
 class World {
   //Hinweis: Innerhalb einer Klasse braucht man kein let, var, const, function
   // mit this wird immer auf die interne Variablen zugegriffen
-
+  //Das habe ich hinzugefügt aus Testzwecken
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
 
   enemies = [//3 Chicken-Objekte in einem Array definiert:
