@@ -12,7 +12,7 @@ class Character extends MovableObject {
     'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-25.png',
     'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-26.png'
   ];
-  currentImage = 0;
+  world;
 
 
   constructor() {//Funktion, die es in jeder Klasse gibt. Wird immer als allererstes ausgeführt wenn ein neues Objekt erstellt wird.
@@ -25,10 +25,13 @@ class Character extends MovableObject {
   //Bilder sollen nacheinander ausgetauscht werden
   animate() {
     setInterval(() => {
-      let i = this.currentImage % this.IMAGES_WALKING.length;// i= 0,1,2,3,4,5,6 dann wieder 0,1,2,3,4,5,6 usw.
-      let path = this.IMAGES_WALKING[i];
-      this.img = this.imageCache[path];
-      this.currentImage++;//currentImage bei jedem Durchgang um eins erhöhen
+
+      if (this.world.keyboard.RIGHT) {
+        let i = this.currentImage % this.IMAGES_WALKING.length;// i= 0,1,2,3,4,5,6 dann wieder 0,1,2,3,4,5,6 usw.
+        let path = this.IMAGES_WALKING[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;//currentImage bei jedem Durchgang um eins erhöhen
+      }
     }, 100);
   }
 
