@@ -2,7 +2,11 @@ class World {
   //Hinweis: Innerhalb einer Klasse braucht man kein let, var, const, function
   // mit this wird immer auf die interne Variablen zugegriffen
 
-  character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
+  canvas;
+  ctx; // Standartvariable Abk.: ctx für context
+  keyboard;
+
+  character = new Character(this.keyboard); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
 
   enemies = [//3 Chicken-Objekte in einem Array definiert:
     new Chicken(),
@@ -18,16 +22,14 @@ class World {
     new BackgroundObject('img/5.Fondo/Capas/2.Fondo2/1.png', 0),
     new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/1.png', 0)
   ];
-  canvas;
-  ctx; // Standartvariable Abk.: ctx für context
-  keyboard;
+
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas; //Also das canvas in World und nicht das, das im constructor steht!!
     this.keyboard = keyboard;//Tastaturabfrage
     this.draw();
-    this.setWorld();
+    //this.setWorld();
   }
 
   setWorld() {
