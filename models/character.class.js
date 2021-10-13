@@ -1,9 +1,11 @@
 class Character extends MovableObject {
-  //hoehe
+
   height = 250; //Bildhöhe
   width = 150; //Bildbreite
   x = 120; //Standartwert
   y = 180; //Standartwert
+  speed = 10;
+
   IMAGES_WALKING = [//Bildersequenzen von El Pollo
     'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png',
     'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-22.png',
@@ -23,15 +25,29 @@ class Character extends MovableObject {
 
   //Bilder sollen nacheinander ausgetauscht werden
   animate() {
-    setInterval(() => {
 
+    setInterval(() => {
       if (this.world.keyboard.RIGHT) {
+        this.x += this.speed;
+        this.otherDirection = false;// image not mirrored
+      }
+
+      if (this.world.keyboard.LEFT) {
+        this.x -= this.speed;
+        this.otherDirection = true;// image mirrored
+      }
+      this.world.camera_x = -this.x;//Kamera schwenkt entgegen der Laufrichtung
+    }, 1000 / 60);
+
+    setInterval(() => {
+      if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+        // walk animation
         let i = this.currentImage % this.IMAGES_WALKING.length;// i= 0,1,2,3,4,5,6 dann wieder 0,1,2,3,4,5,6 usw.
         let path = this.IMAGES_WALKING[i];
         this.img = this.imageCache[path];
         this.currentImage++;//currentImage bei jedem Durchgang um eins erhöhen
       }
-    }, 100);
+    }, 50);
   }
 
   jump() {
