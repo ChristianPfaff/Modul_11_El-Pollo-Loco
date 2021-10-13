@@ -18,23 +18,27 @@ class World {
     new BackgroundObject('img/5.Fondo/Capas/2.Fondo2/1.png', 0),
     new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/1.png', 0)
   ];
-  canvas;
-  ctx; // Standartvariable Abk.: ctx für context
+  //canvas;
+  //ctx; // Standartvariable Abk.: ctx für context
+  //keyboard;
 
-  constructor(canvas) {
+  constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas; //Also das canvas in World und nicht das, das im constructor steht!!
+    this.keyboard = keyboard;//Tastaturabfrage
     this.draw();
+    this.setWorld();
   }
 
+  setWorld() {
+    this.character.world = this;
+  }
 
   draw() {
     //"Leinwand" sauber machen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     //backgroundObjects
     this.addObjectsToMap(this.backgroundObjects);
-
-
     //character
     this.addToMap(this.character); //Methode: drawImage(); Character auf Bildschirm mit Koord. verschieben
     //chickens
@@ -44,7 +48,7 @@ class World {
 
 
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
-    let self = this; //Das so zu programmieren ist ein hack (techn. Kniff) - Warum das so ist weiß niemand! Einfach so akzeptieren!
+    let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
     requestAnimationFrame(function () {
       self.draw();
     });
@@ -55,7 +59,7 @@ class World {
       this.addToMap(o);
     });
   }
-  addToMap(mo) {
+  addToMap(mo) {//Objekt mo auf Canvas(Bildschirm ausgeben)
     this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
   }
 
