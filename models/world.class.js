@@ -4,6 +4,7 @@ class World {
   //Das habe ich hinzugefügt aus Testzwecken
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
 
+  //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   canvas;
   ctx; // Standartvariable Abk.: ctx für context
@@ -42,13 +43,13 @@ class World {
 
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
     let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
-    requestAnimationFrame(function () {
+    requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
       self.draw();
     });
   }
 
   addObjectsToMap(objects) {
-    objects.forEach(o => {//enemies auf Bildschirm verschieben
+    objects.forEach(o => {//Objekt auf Bildschirm verschieben
       this.addToMap(o);
     });
   }
@@ -59,7 +60,7 @@ class World {
       this.ctx.scale(-1, 1);
       mo.x = mo.x * -1;
     }
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);//Bild auf Bildschirm ausgeben
+    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);//Bild auf Bildschirm ausgeben. Img lauft nach Rechts.
     if (mo.otherDirection) {//Wenn true dann urspr. canvas-Einstellungen wieder herstellen
       mo.x = mo.x * -1;
       this.ctx.restore();//Den Ursp. wieder an an den Anfang setzen

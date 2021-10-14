@@ -28,6 +28,16 @@ class MovableObject {
 
   }
 
+  playAnimation(images) {
+    let i = this.currentImage % images.length;// i= 0,1,2,3,4,5,6 dann wieder 0,1,2,3,4,5,6 usw.
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;//currentImage bei jedem Durchgang um eins erhöhen
+  }
+
+
+
+
   moveRight() { //Das Wort "function" wird in modernen Programmierparadigmen wie objetorient. Prog. nicht mehr benötigt!!
     console.log('Moving right');
 

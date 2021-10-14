@@ -17,7 +17,6 @@ class Character extends MovableObject {
   world;
   walking_sound = new Audio('audio/el_pollo_loco.mp3');
 
-
   constructor() {//Funktion, die es in jeder Klasse gibt. Wird immer als allererstes ausgeführt wenn ein neues Objekt erstellt wird.
     super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png');//s. movable-objekt.class
     this.loadImages(this.IMAGES_WALKING);//s. movable-objekt.class
@@ -46,10 +45,7 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         // walk animation
-        let i = this.currentImage % this.IMAGES_WALKING.length;// i= 0,1,2,3,4,5,6 dann wieder 0,1,2,3,4,5,6 usw.
-        let path = this.IMAGES_WALKING[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;//currentImage bei jedem Durchgang um eins erhöhen
+        this.playAnimation(this.IMAGES_WALKING);
       }
     }, 50);
   }
