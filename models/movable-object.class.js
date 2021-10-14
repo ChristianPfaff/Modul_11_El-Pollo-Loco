@@ -7,6 +7,7 @@ class MovableObject {
   imageCache = {}; //Mehere Bilder speichern in Objekt "imageCache"
   currentImage = 0; //Zähler für die Funktion animate()
   speed = 0.15;//Geschwindigkeit
+  otherDirection = false; //Bewegung nach Rechts. True nach Links
 
   // loading('img/test.png');
   loadImage(path) {
@@ -18,7 +19,7 @@ class MovableObject {
    * This function stores all images of the array "arr" in the "imageCache"
    * @param {Array} arr - ['img/image1.png','img/image2.png',...] 
    */
-  loadImages(arr) {//Bilder in dem Obket: imageCache laden
+  loadImages(arr) {//Bilder in dem Objet: imageCache laden
     arr.forEach((path) => {
       let img = new Image();//img wird innerhalb der Methode def. und ist auch nur da gültig und hat nichts mit img ausserhalb zu tun.
       img.src = path;

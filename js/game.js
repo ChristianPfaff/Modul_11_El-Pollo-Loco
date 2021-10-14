@@ -1,6 +1,6 @@
 let canvas;
 let world;
-let keyboard = new Keyboard();
+let keyboard = new Keyboard(); // Eine Instanz von Keyboard wird angelegt
 
 
 function init() {
