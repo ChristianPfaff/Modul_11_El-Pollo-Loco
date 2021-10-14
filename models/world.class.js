@@ -4,9 +4,9 @@ class World {
   //Das habe ich hinzugefügt aus Testzwecken
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
 
-  enemies = level1.enemies;
-  clouds = level1.clouds;
-  backgroundObjects = level1.backgroundObjects;
+  enemies = level1.enemies;//Externe Einbindung
+  clouds = level1.clouds;//Externe Einbindung
+  backgroundObjects = level1.backgroundObjects;//Externe Einbindung
   canvas;
   ctx; // Standartvariable Abk.: ctx für context
   keyboard;

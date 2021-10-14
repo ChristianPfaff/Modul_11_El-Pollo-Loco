@@ -1,4 +1,4 @@
-const level1 = new Level(
+const level1 = new Level(//Hier werden die Obekte an den Konstruktor übergeben:
   [//3 Chicken-Objekte in einem Array definiert:
     new Chicken(),
     new Chicken(),
