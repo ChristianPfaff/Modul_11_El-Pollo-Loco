@@ -52,22 +52,15 @@ class World {
   }
 
   setWorld() {
-<<<<<<< HEAD
-    this.character.world = this;
-=======
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
->>>>>>> 6c6f
   }
 
   draw() {
     //"Leinwand" sauber machen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-<<<<<<< HEAD
-=======
 
     this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
 
->>>>>>> 6c6f
     //backgroundObjects
     this.addObjectsToMap(this.backgroundObjects);
     //character
@@ -77,11 +70,8 @@ class World {
     //clouds
     this.addObjectsToMap(this.clouds);
 
-<<<<<<< HEAD
-=======
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
 
->>>>>>> 6c6f
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
     let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
     requestAnimationFrame(function () {
@@ -95,9 +85,6 @@ class World {
     });
   }
   addToMap(mo) {//Objekt mo auf Canvas(Bildschirm ausgeben)
-<<<<<<< HEAD
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-=======
     if (mo.otherDirection) {// Wenn true dann nach Links laufen
       this.ctx.save();//Aktuelle Einstellungen von context
       this.ctx.translate(mo.width, 0);
@@ -109,7 +96,6 @@ class World {
       mo.x = mo.x * -1;
       this.ctx.restore();//Den Ursp. wieder an an den Anfang setzen
     }
->>>>>>> 6c6f
   }
 
 }
