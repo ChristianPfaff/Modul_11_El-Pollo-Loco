@@ -15,6 +15,7 @@ class Character extends MovableObject {
     'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-26.png'
   ];
   world;
+  walking_sound = new Audio('audio/el_pollo_loco.mp3');
 
 
   constructor() {//Funktion, die es in jeder Klasse gibt. Wird immer als allererstes ausgeführt wenn ein neues Objekt erstellt wird.
@@ -27,16 +28,19 @@ class Character extends MovableObject {
   animate() {
 
     setInterval(() => {
-      if (this.world.keyboard.RIGHT) {
+      this.walking_sound.pause();
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.x += this.speed;
         this.otherDirection = false;// image not mirrored
+        this.walking_sound.play();
       }
-
-      if (this.world.keyboard.LEFT) {
+      console.log(this.world.level.level_end_x);
+      if (this.world.keyboard.LEFT && this.x > 0) {
         this.x -= this.speed;
         this.otherDirection = true;// image mirrored
+        this.walking_sound.play();
       }
-      this.world.camera_x = -this.x;//Kamera schwenkt entgegen der Laufrichtung
+      this.world.camera_x = -this.x + 100;//Kamera schwenkt entgegen der Laufrichtung
     }, 1000 / 60);
 
     setInterval(() => {

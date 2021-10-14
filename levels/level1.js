@@ -1,4 +1,4 @@
-const level1 = new Level(//Hier werden die Obekte an den Konstruktor übergeben:
+const level1 = new Level(//Hier werden die Obekte an den Konstruktor übergeben. Außerdem ist level1 eine globale Variable.
   [//3 Chicken-Objekte in einem Array definiert:
     new Chicken(),
     new Chicken(),

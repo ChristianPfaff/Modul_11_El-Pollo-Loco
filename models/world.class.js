@@ -4,9 +4,7 @@ class World {
   //Das habe ich hinzugefügt aus Testzwecken
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
 
-  enemies = level1.enemies;//Externe Einbindung
-  clouds = level1.clouds;//Externe Einbindung
-  backgroundObjects = level1.backgroundObjects;//Externe Einbindung
+  level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   canvas;
   ctx; // Standartvariable Abk.: ctx für context
   keyboard;
@@ -32,13 +30,13 @@ class World {
     this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
 
     //backgroundObjects
-    this.addObjectsToMap(this.backgroundObjects);
+    this.addObjectsToMap(this.level.backgroundObjects);
     //character
     this.addToMap(this.character); //Methode: drawImage(); Character auf Bildschirm mit Koord. verschieben
     //chickens
-    this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.level.enemies);
     //clouds
-    this.addObjectsToMap(this.clouds);
+    this.addObjectsToMap(this.level.clouds);
 
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
 
