@@ -56,7 +56,7 @@ class World {
   addToMap(mo) {//Objekt mo auf Canvas(Bildschirm ausgeben)
     if (mo.otherDirection) {// Wenn true dann nach Links laufen
       this.ctx.save();//Aktuelle Einstellungen von context
-      this.ctx.translate(mo.width, 0);
+      this.ctx.translate(mo.width, 0);//translate bewegt den Ursprung
       this.ctx.scale(-1, 1);
       mo.x = mo.x * -1;
     }

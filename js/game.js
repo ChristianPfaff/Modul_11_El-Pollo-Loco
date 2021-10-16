@@ -6,11 +6,7 @@ let keyboard = new Keyboard(); // Eine Instanz von Keyboard wird angelegt
 function init() {
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);//Hier ist eine neue Variable (Objekt) world in der eine "neue Welt" angelegt werden kann und bei der Erstellung des Objektes werden die Variablen canvas und keyboard gleich mit gegeben.
-
   console.log('My Character is', world.character);
-
-
-
 }
 
 
