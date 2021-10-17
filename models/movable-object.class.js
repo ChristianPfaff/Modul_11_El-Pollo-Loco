@@ -35,9 +35,6 @@ class MovableObject {
     this.currentImage++;//currentImage bei jedem Durchgang um eins erhöhen
   }
 
-
-
-
   moveRight() { //Das Wort "function" wird in modernen Programmierparadigmen wie objetorient. Prog. nicht mehr benötigt!!
     console.log('Moving right');
 
