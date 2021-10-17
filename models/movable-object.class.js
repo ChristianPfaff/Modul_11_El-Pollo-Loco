@@ -8,6 +8,24 @@ class MovableObject {
   currentImage = 0; //Zähler für die Funktion animate()
   speed = 0.15;//Geschwindigkeit
   otherDirection = false; //Bewegung nach Rechts. True nach Links
+  speedy = 0;
+  acceleration = 2.5;
+
+
+
+  applyGravity() {
+    setInterval(() => {
+
+      if (this.isAboutGround()) {
+        this.y -= this.speedy;
+        this.speedy -= this.acceleration;
+      }
+    }, 1000 / 25);
+  }
+
+  isAboutGround() {
+    return this.y < 180;
+  }
 
   // loading('img/test.png');
   loadImage(path) {

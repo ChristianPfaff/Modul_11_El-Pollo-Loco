@@ -3,7 +3,7 @@ class Character extends MovableObject {
   height = 250; //Bildhöhe
   width = 150; //Bildbreite
   x = 120; //Standartwert
-  y = 180; //Standartwert
+  y = 80; //Standartwert
   speed = 10;
 
   IMAGES_WALKING = [//Bildersequenzen von El Pollo
@@ -20,6 +20,7 @@ class Character extends MovableObject {
   constructor() {//Funktion, die es in jeder Klasse gibt. Wird immer als allererstes ausgeführt wenn ein neues Objekt erstellt wird.
     super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png');//s. movable-objekt.class
     this.loadImages(this.IMAGES_WALKING);//s. movable-objekt.class
+    this.applyGravity();
     this.animate();
   }
 
