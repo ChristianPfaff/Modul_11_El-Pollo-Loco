@@ -53,19 +53,32 @@ class World {
       this.addToMap(o);
     });
   }
+
   addToMap(mo) {//Objekt mo auf Canvas(Bildschirm ausgeben)
     if (mo.otherDirection) {// Wenn true dann nach Links laufen
-      this.ctx.save();//Aktuelle Einstellungen von context
-      this.ctx.translate(mo.width, 0);//translate bewegt den Ursprung
-      this.ctx.scale(-1, 1);
-      mo.x = mo.x * -1;
+      this.flipImage(mo);
     }
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);//Bild auf Bildschirm ausgeben. Img lauft nach Rechts.
-    if (mo.otherDirection) {//Wenn true dann urspr. canvas-Einstellungen wieder herstellen
-      mo.x = mo.x * -1;
-      this.ctx.restore();//Den Ursp. wieder an an den Anfang setzen
+    mo.draw(this.ctx);
+    mo.drawFrame(this.ctx);//Recheck um Objekt
+
+    //Wenn true dann urspr. canvas-Einstellungen wieder herstellen
+    if (mo.otherDirection) {
+      this.flipImageBack(mo);
     }
   }
+
+  flipImage(mo) {
+    this.ctx.save();//Aktuelle Einstellungen von context
+    this.ctx.translate(mo.width, 0);//translate bewegt den Ursprung
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+  }
+
+  flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();//Den Ursp. wieder an an den Anfang setzen
+  }
+
 
 }
 
