@@ -14,12 +14,30 @@ class Character extends MovableObject {
     'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-25.png',
     'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-26.png'
   ];
+
+  IMAGES_JUMPING = [
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-31.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-32.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-33.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-34.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-35.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-36.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-37.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-38.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-39.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-40.png'
+  ];
+
+
+
+
   world;//Enthält Referenz zur Klasse world
   walking_sound = new Audio('audio/el_pollo_loco.mp3');
 
   constructor() {//Funktion, die es in jeder Klasse gibt. Wird immer als allererstes ausgeführt wenn ein neues Objekt erstellt wird.
     super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png');//s. movable-objekt.class
     this.loadImages(this.IMAGES_WALKING);//s. movable-objekt.class
+    this.loadImages(this.IMAGES_JUMPING);
     this.applyGravity();
     this.animate();
   }
@@ -31,31 +49,40 @@ class Character extends MovableObject {
     setInterval(() => {
       this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.x += this.speed;
-        this.otherDirection = false;// image not mirrored
+        this.moveRight();
+        this.otherDirection = false;
         this.walking_sound.play();
       }
-      console.log(this.world.level.level_end_x);
+
       if (this.world.keyboard.LEFT && this.x > 0) {
-        this.x -= this.speed;
-        this.otherDirection = true;// image mirrored
+        this.moveLeft();
+        this.otherDirection = true;
         this.walking_sound.play();
       }
+
+      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+        this.jump();
+      }
+
       this.world.camera_x = -this.x + 100;//Kamera schwenkt entgegen der Laufrichtung
 
     }, 1000 / 60);
 
-    //Hände und Füße bewegen
+    //Bewegungen Peppe
     setInterval(() => {
-      if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        // walk animation
-        this.playAnimation(this.IMAGES_WALKING);
+      //Springen
+      if (this.isAboveGround()) {
+        this.playAnimation(this.IMAGES_JUMPING);
+      } else {
+        //Hände und Füße bewegen	
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+          // walk animation
+          this.playAnimation(this.IMAGES_WALKING);
+        }
       }
     }, 50);
   }
 
-  jump() {
 
-  }
 
 }

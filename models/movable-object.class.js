@@ -8,7 +8,7 @@ class MovableObject {
   currentImage = 0; //Zähler für die Funktion animate()
   speed = 0.15;//Geschwindigkeit
   otherDirection = false; //Bewegung nach Rechts. True nach Links
-  speedy = 0;
+  speedY = 0;
   acceleration = 2.5;
 
 
@@ -16,14 +16,14 @@ class MovableObject {
   applyGravity() {
     setInterval(() => {
 
-      if (this.isAboutGround()) {
-        this.y -= this.speedy;
-        this.speedy -= this.acceleration;
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
       }
     }, 1000 / 25);
   }
 
-  isAboutGround() {
+  isAboveGround() {
     return this.y < 180;
   }
 
@@ -54,14 +54,18 @@ class MovableObject {
   }
 
   moveRight() { //Das Wort "function" wird in modernen Programmierparadigmen wie objetorient. Prog. nicht mehr benötigt!!
-    console.log('Moving right');
+    this.x += this.speed;
+    this.otherDirection = false;// image not mirrored
+    this.walking_sound.play();
 
   }
 
   moveLeft() {
-    setInterval(() => {//Wiederholt sich dauernt
-      this.x -= this.speed; //immer 0,15px/Frame weniger bei jedem Bildaufruf
-    }, 1000 / 60);//60 fps
+    this.x -= this.speed;
+  }
+
+  jump() {
+    this.speedY = 30;
   }
 
 }
