@@ -28,8 +28,21 @@ class Character extends MovableObject {
     'img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-40.png'
   ];
 
+  IMAGES_DEAD = [
+    'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-51.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-52.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-53.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-54.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-55.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-56.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-57.png'
+  ];
 
-
+  IMAGES_HURT = [
+    'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-41.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-42.png',
+    'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-43.png'
+  ];
 
   world;//Enthält Referenz zur Klasse world
   walking_sound = new Audio('audio/el_pollo_loco.mp3');
@@ -38,6 +51,8 @@ class Character extends MovableObject {
     super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png');//s. movable-objekt.class
     this.loadImages(this.IMAGES_WALKING);//s. movable-objekt.class
     this.loadImages(this.IMAGES_JUMPING);
+    this.loadImages(this.IMAGES_DEAD);
+    this.loadImages(this.IMAGES_HURT);
     this.applyGravity();
     this.animate();
   }
@@ -68,10 +83,13 @@ class Character extends MovableObject {
 
     }, 1000 / 60);
 
-    //Bewegungen Peppe
+    //Bewegungen Peppe 
     setInterval(() => {
-      //Springen
-      if (this.isAboveGround()) {
+      if (this.isDead()) {
+        this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HURT);
+      } else if (this.isAboveGround()) {//Springen
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
         //Hände und Füße bewegen	
