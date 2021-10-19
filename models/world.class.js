@@ -18,10 +18,21 @@ class World {
     this.keyboard = keyboard;//Tastaturabfrage
     this.draw();
     this.setWorld();
+    this.checkCollisions();
   }
 
   setWorld() {
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
+  }
+
+  checkCollisions() {
+    setInterval(() => {
+      this.level.enemies.forEach((enemy) => {
+        if (this.character.isColliding(enemy)) {
+          console.log('Collision with Character', enemy);
+        }
+      });
+    }, 1000);
   }
 
   draw() {

@@ -37,14 +37,21 @@ class MovableObject {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);//Bild auf Bildschirm ausgeben. Img lauft nach Rechts.
   }
 
-  //Rechteck um Objekt
   drawFrame(ctx) {
-    ctx.lineWidth = '5';
-    ctx.beginPath();
-    ctx.strokeStyle = 'blue';
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.stroke();
+    if (this instanceof Character || this instanceof Chicken) {
+      //Rechteck um Objekt
+      ctx.beginPath();
+      ctx.lineWidth = '5';
+      ctx.strokeStyle = 'blue';
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
   }
+  //charctar.iscolliding(chicken);
+  isColliding(mo) {
+    return this.x + this.width > mo.x && this.y + this.height > mo.y && this.x < mo.x && this.y < mo.y + mo.height
+  }
+
 
   /**
    * This function stores all images of the array "arr" in the "imageCache"
