@@ -31,7 +31,7 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
-          //console.log('Collision with Character, energy', enemy, this.character.energy);
+          this.statusBar.setPercentage(this.character.energy);
         }
       });
     }, 1000);
@@ -45,8 +45,10 @@ class World {
 
     //backgroundObjects
     this.addObjectsToMap(this.level.backgroundObjects);
+    this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
     //statusbar 
     this.addToMap(this.statusBar);
+    this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
     //character
     this.addToMap(this.character); //Methode: drawImage(); Character auf Bildschirm mit Koord. verschieben
     //chickens

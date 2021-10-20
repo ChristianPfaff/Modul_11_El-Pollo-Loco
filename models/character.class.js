@@ -1,7 +1,7 @@
 class Character extends MovableObject {
 
-  height = 250; //Bildhöhe
-  width = 150; //Bildbreite
+  height = 25 0; //Bildhöhe
+  width = 9 0; //Bildbreite
   x = 120; //Standartwert
   y = 80; //Standartwert
   speed = 10;
