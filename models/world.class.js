@@ -10,6 +10,7 @@ class World {
   ctx; // Standartvariable Abk.: ctx für context
   keyboard;
   camera_x = 0;
+  statusBar = new StatusBar();
 
 
   constructor(canvas, keyboard) {
@@ -44,6 +45,8 @@ class World {
 
     //backgroundObjects
     this.addObjectsToMap(this.level.backgroundObjects);
+    //statusbar 
+    this.addToMap(this.statusBar);
     //character
     this.addToMap(this.character); //Methode: drawImage(); Character auf Bildschirm mit Koord. verschieben
     //chickens
@@ -61,7 +64,7 @@ class World {
   }
 
   addObjectsToMap(objects) {
-    objects.forEach(o => {//Objekt auf Bildschirm verschieben
+    objects.forEach(o => { //Objekt auf Bildschirm verschieben
       this.addToMap(o);
     });
   }
