@@ -1,40 +1,55 @@
 class World {
   //Hinweis: Innerhalb einer Klasse braucht man kein let, var, const, function
   // mit this wird immer auf die interne Variablen zugegriffen
-  //Das habe ich hinzugefügt aus Testzwecken
-  character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
 
-  //chicken, clouds, endboss über das Objekt level1 geladen
-  level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   canvas;
   ctx; // Standartvariable Abk.: ctx für context
   keyboard;
   camera_x = 0;
+
+  //chicken, clouds, endboss über das Objekt level1 geladen
+  level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   statusBar = new StatusBar();
+  character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
+  throwableObjects = [];
 
 
   constructor(canvas, keyboard) {
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.canvas = canvas; //Also das canvas in World und nicht das, das im constructor steht!!
     this.keyboard = keyboard;//Tastaturabfrage
     this.draw();
     this.setWorld();
-    this.checkCollisions();
+    this.run();
   }
 
   setWorld() {
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
   }
 
-  checkCollisions() {
+  run() {
     setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
-        }
-      });
-    }, 1000);
+      this.checkCollisions();
+      this.checkThrowObjects();
+    }, 200);
+  }
+
+  checkThrowObjects() {
+    if (this.keyboard.D) {
+      let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+      this.throwableObjects.push(bottle);
+
+    }
+  }
+
+
+  checkCollisions() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+      }
+    });
   }
 
   draw() {
@@ -45,16 +60,21 @@ class World {
 
     //backgroundObjects
     this.addObjectsToMap(this.level.backgroundObjects);
+
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
     //statusbar 
     this.addToMap(this.statusBar);
+
     this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
+
     //character
     this.addToMap(this.character); //Methode: drawImage(); Character auf Bildschirm mit Koord. verschieben
     //chickens
     this.addObjectsToMap(this.level.enemies);
     //clouds
     this.addObjectsToMap(this.level.clouds);
+    //
+    this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
 
