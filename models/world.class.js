@@ -7,18 +7,20 @@ class World {
   keyboard;
   camera_x = 0;
 
+  foreGround = new ForegroundObjekt();//Startbild
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   statusBar = new StatusBar();
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
   throwableObjects = [];
 
-
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.canvas = canvas; //Also das canvas in World und nicht das, das im constructor steht!!
     this.keyboard = keyboard;//Tastaturabfrage
-    this.draw();
+    //Startbild  
+    this.addToMap(this.foreGround);
+    //this.draw();
     this.setWorld();
     this.run();
   }
@@ -38,10 +40,8 @@ class World {
     if (this.keyboard.D) {
       let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
       this.throwableObjects.push(bottle);
-
     }
   }
-
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
@@ -53,10 +53,15 @@ class World {
   }
 
   draw() {
+
     //"Leinwand" sauber machen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+
+
     this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
+
+
 
     //backgroundObjects
     this.addObjectsToMap(this.level.backgroundObjects);
@@ -115,8 +120,6 @@ class World {
     mo.x = mo.x * -1;
     this.ctx.restore();//Den Ursp. wieder an an den Anfang setzen
   }
-
-
 }
 
 

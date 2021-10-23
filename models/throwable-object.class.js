@@ -1,7 +1,5 @@
 class ThrowableObject extends MovableObject {
 
-
-
   constructor(x, y) {
     super().loadImage('img/7.Marcadores/Icono/Botella.png');
     this.x = x;
