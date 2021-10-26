@@ -7,7 +7,6 @@ class World {
   keyboard;
   camera_x = 0;
 
-  foreGround = new ForegroundObjekt();//Startbild
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   statusBar = new StatusBar();
@@ -16,13 +15,17 @@ class World {
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
-    this.canvas = canvas; //Also das canvas in World und nicht das, das im constructor steht!!
+    this.canvas = canvas;//Aktuele Referenz. Also das canvas in World und nicht dass, das im constructor steht!!
     this.keyboard = keyboard;//Tastaturabfrage
-    //Startbild  
-    this.addToMap(this.foreGround);
-    //this.draw();
+    this.showStartImg();//Startbildschirm
+    this.draw();
     this.setWorld();
     this.run();
+  }
+
+  showStartImg() {
+    let foreGround = new ForegroundObjekt(this.canvas);
+    this.addToMap(foreGround);//Startbild  
   }
 
   setWorld() {
