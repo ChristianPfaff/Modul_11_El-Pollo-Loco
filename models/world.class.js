@@ -2,30 +2,34 @@ class World {
   //Hinweis: Innerhalb einer Klasse braucht man kein let, var, const, function
   // mit this wird immer auf die interne Variablen zugegriffen
 
+  money = new MoneyObject();
   canvas;
   ctx; // Standartvariable Abk.: ctx für context
   keyboard;
   camera_x = 0;
-
+  foreGround;
+  gameInProgress = false;
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   statusBar = new StatusBar();
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
   throwableObjects = [];
+  moneyObjects = [
+    new MoneyObject(),
+    new MoneyObject(),
+    new MoneyObject(),
+    new MoneyObject()
+  ];
 
-  constructor(canvas, keyboard) {
+  constructor(keyboard) {
+    this.canvas = document.getElementById('canvas');
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
-    this.canvas = canvas;//Aktuele Referenz. Also das canvas in World und nicht dass, das im constructor steht!!
+    this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);
+    //this.startGame = new StartGameBtn();
     this.keyboard = keyboard;//Tastaturabfrage
-    this.showStartImg();//Startbildschirm
-    this.draw();
     this.setWorld();
     this.run();
-  }
-
-  showStartImg() {
-    let foreGround = new ForegroundObjekt(this.canvas);
-    this.addToMap(foreGround);//Startbild  
+    this.draw();
   }
 
   setWorld() {
@@ -60,11 +64,27 @@ class World {
     //"Leinwand" sauber machen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    //if (this.gameInProgress) {
+    this.drawGameInProgress();
+    //}
 
+    /* if (!this.gameInProgress) {
+      this.drawGameStart();
+    } */
 
+    //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
+    let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
+    requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
+      self.draw();
+    });
+  }
+
+  drawGameStart() {
+    this.addToMap(this.foreGround);//Startbild  
+  }
+
+  drawGameInProgress() {
     this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
-
-
 
     //backgroundObjects
     this.addObjectsToMap(this.level.backgroundObjects);
@@ -81,16 +101,13 @@ class World {
     this.addObjectsToMap(this.level.enemies);
     //clouds
     this.addObjectsToMap(this.level.clouds);
-    //
+    //Wurfobjekt
     this.addObjectsToMap(this.throwableObjects);
+    //money
+    this.addObjectsToMap(this.moneyObjects);
 
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
 
-    //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
-    let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
-    requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
-      self.draw();
-    });
   }
 
   addObjectsToMap(objects) {
