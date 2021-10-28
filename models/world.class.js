@@ -2,7 +2,6 @@ class World {
   //Hinweis: Innerhalb einer Klasse braucht man kein let, var, const, function
   // mit this wird immer auf die interne Variablen zugegriffen
 
-  money = new MoneyObject();
   canvas;
   ctx; // Standartvariable Abk.: ctx für context
   keyboard;
@@ -14,15 +13,10 @@ class World {
   statusBar = new StatusBar();
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
   throwableObjects = [];
-  moneyObjects = [
-    new MoneyObject(),
-    new MoneyObject(),
-    new MoneyObject(),
-    new MoneyObject()
-  ];
+
 
   constructor(keyboard) {
-    this.canvas = document.getElementById('canvas');
+    this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);
     //this.startGame = new StartGameBtn();
@@ -30,7 +24,10 @@ class World {
     this.setWorld();
     this.run();
     this.draw();
+
   }
+
+
 
   setWorld() {
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
@@ -104,7 +101,7 @@ class World {
     //Wurfobjekt
     this.addObjectsToMap(this.throwableObjects);
     //money
-    this.addObjectsToMap(this.moneyObjects);
+    this.addObjectsToMap(this.level.moneys);
 
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
 

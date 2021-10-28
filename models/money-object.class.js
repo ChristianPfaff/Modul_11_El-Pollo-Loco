@@ -1,15 +1,10 @@
 class MoneyObject extends MovableObject {
 
-  constructor() {
-    super();
+  constructor(x, y) {
+    super().loadImage('img/8.Coin/Moneda1.png');
     this.height = 80;
     this.width = 80;
-    this.randomXY();
+    this.x = x;
+    this.y = y;
   }
-
-  randomXY() {
-    this.x = 100 + Math.random() * 50;
-    this.y = 100 + Math.random() * 50;
-  }
-
 }

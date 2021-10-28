@@ -32,6 +32,11 @@ const level1 = new Level(//Hier werden die Obekte an den Konstruktor übergeben.
     new BackgroundObject('img/5.Fondo/Capas/2.Fondo2/2.png', 719 * 3),
     new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/2.png', 719 * 3)
 
+  ],
+  [
+    new MoneyObject(300, 350),
+    new MoneyObject(500, 300),
+    new MoneyObject(700, 350),
+    new MoneyObject(900, 300)
   ]
-
 );
