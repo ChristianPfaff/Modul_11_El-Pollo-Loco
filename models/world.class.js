@@ -11,6 +11,7 @@ class World {
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   statusBar = new StatusBar();
+  statusBarCoin = new StatusBarCoin();
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
   throwableObjects = [];
 
@@ -18,7 +19,7 @@ class World {
   constructor(keyboard) {
     this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
-    this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);
+    this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);//Für Startbild
     //this.startGame = new StartGameBtn();
     this.keyboard = keyboard;//Tastaturabfrage
     this.setWorld();
@@ -52,6 +53,16 @@ class World {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
+      }
+    });
+
+    //NOTE Hier weitermachen 31.10.2021
+    this.level.moneys.forEach((coin) => {
+      if (this.character.isColliding(coin)) {
+        this.statusBarCoin.calcNewPercentage();
+
+        //this.character.hit();
+        //this.statusBarCoin.setPercentage(this.character.energy);
       }
     });
   }
@@ -89,6 +100,8 @@ class World {
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
     //statusbar 
     this.addToMap(this.statusBar);
+    //statusbarCoin
+    this.addToMap(this.statusBarCoin);
 
     this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
 
