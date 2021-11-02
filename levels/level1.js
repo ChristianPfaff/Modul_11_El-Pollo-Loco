@@ -38,5 +38,11 @@ const level1 = new Level(//Hier werden die Obekte an den Konstruktor übergeben.
     new MoneyObject(500, 300),
     new MoneyObject(700, 350),
     new MoneyObject(900, 300)
+  ],
+  [
+    new StatusBarBottle(300, 600),
+    new StatusBarBottle(500, 500),
+    new StatusBarBottle(700, 500),
+    new StatusBarBottle(900, 500)
   ]
 );

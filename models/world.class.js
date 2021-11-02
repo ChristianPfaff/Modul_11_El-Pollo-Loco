@@ -12,9 +12,9 @@ class World {
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
   statusBar = new StatusBar();
   statusBarCoin = new StatusBarCoin();
+  statusBarBottle = new StatusBarBottle();
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
   throwableObjects = [];
-
 
   constructor(keyboard) {
     this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element
@@ -27,8 +27,6 @@ class World {
     this.draw();
 
   }
-
-
 
   setWorld() {
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
@@ -56,13 +54,17 @@ class World {
       }
     });
 
-    //NOTE Hier weitermachen 31.10.2021
+    //collect coins
     this.level.moneys.forEach((coin) => {
       if (this.character.isColliding(coin)) {
+        let z = this.level.moneys.indexOf(coin);
+        this.level.moneys.splice(z, 1);
         this.statusBarCoin.calcNewPercentage();
+      }
 
-        //this.character.hit();
-        //this.statusBarCoin.setPercentage(this.character.energy);
+      if (this.level.moneys == '') {
+        this.character.energy = 100;
+        this.statusBar.setPercentage(this.character.energy)
       }
     });
   }
@@ -102,6 +104,8 @@ class World {
     this.addToMap(this.statusBar);
     //statusbarCoin
     this.addToMap(this.statusBarCoin);
+    //statusBarBottle
+    this.addToMap(this.statusBarBottle);
 
     this.ctx.translate(this.camera_x, 0);//Ursprung von ctx wird verschoben,dann die Nachfolgenden Bilder gezeichnet
 
@@ -115,6 +119,7 @@ class World {
     this.addObjectsToMap(this.throwableObjects);
     //money
     this.addObjectsToMap(this.level.moneys);
+
 
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
 
