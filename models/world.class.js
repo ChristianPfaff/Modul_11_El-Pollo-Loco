@@ -15,6 +15,7 @@ class World {
   statusBarBottle = new StatusBarBottle();
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
   throwableObjects = [];
+  numberOfbottle = 5;
 
   constructor(keyboard) {
     this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element
@@ -27,6 +28,7 @@ class World {
     this.draw();
 
   }
+
 
   setWorld() {
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
@@ -41,12 +43,22 @@ class World {
 
   checkThrowObjects() {
     if (this.keyboard.D) {
+      if (this.statusBarBottle.getCurrentPercentage() == 0) {
+        console.log('No bottle left', this.statusBarBottle.getCurrentPercentage());
+        return 0;
+      }
+      if (this.throwableObjects.length == 5) {
+        this.statusBarBottle.calcNewPercentage('r');//r: Um 20% reduzieren
+        this.throwableObjects = [];//Array leeren
+        console.log('getCurrentPercentage', this.statusBarBottle.getCurrentPercentage());
+      }
       let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
       this.throwableObjects.push(bottle);
     }
   }
 
   checkCollisions() {
+    //enemy
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
@@ -59,7 +71,7 @@ class World {
       if (this.character.isColliding(coin)) {
         let z = this.level.moneys.indexOf(coin);
         this.level.moneys.splice(z, 1);
-        this.statusBarCoin.calcNewPercentage();
+        this.statusBarCoin.calcNewPercentage('r');//r: reduce
       }
 
       if (this.level.moneys == '') {
@@ -67,7 +79,19 @@ class World {
         this.statusBar.setPercentage(this.character.energy)
       }
     });
+
+    //collect bottles    
+    this.level.bottles.forEach((bottle) => {
+      if ((this.statusBarBottle.percentage >= 0 || this.statusBarBottle.percentage < 100)) {
+        if (this.character.isColliding(bottle)) {
+          let z = this.level.bottles.indexOf(bottle);
+          this.level.bottles.splice(z, 1);
+          this.statusBarBottle.calcNewPercentage('a');//a: add
+        }
+      }
+    });
   }
+
 
   draw() {
 
@@ -117,8 +141,10 @@ class World {
     this.addObjectsToMap(this.level.clouds);
     //Wurfobjekt
     this.addObjectsToMap(this.throwableObjects);
-    //money
+    //moneys
     this.addObjectsToMap(this.level.moneys);
+    //bottle
+    this.addObjectsToMap(this.level.bottles);
 
 
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.

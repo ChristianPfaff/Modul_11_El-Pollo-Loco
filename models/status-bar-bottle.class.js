@@ -20,8 +20,26 @@ class StatusBarBottle extends DrawableObjekt {
     this.setPercentage(100);
   }
 
-  calcNewPercentage() {
-    this.setPercentage(this.percentage -= 20);
+  calcNewPercentage(operation) {
+
+    if (operation == 'r') {
+      this.setPercentage(this.percentage -= 20);
+      if (this.percentage < 0) {
+        this.percentage = 0
+      };
+    }
+    if (operation == 'a') {
+      this.setPercentage(this.percentage += 21);
+      if (this.percentage > 100) {
+        this.setPercentage(this.percentage = 100)
+      };
+
+    }
+
+  }
+
+  getCurrentPercentage() {
+    return this.percentage;
   }
 
   //setPercentage(50); 
