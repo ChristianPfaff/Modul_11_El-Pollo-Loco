@@ -18,7 +18,7 @@ class DrawableObjekt {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof MoneyObject) {
+    if (this instanceof Character || this instanceof Chicken || this instanceof MoneyObject || this instanceof ThrowableObject) {
       //Rechteck um Objekt
       ctx.beginPath();
       ctx.lineWidth = '5';

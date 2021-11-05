@@ -45,7 +45,7 @@ class World {
     if (this.keyboard.D) {
       if (this.statusBarBottle.getCurrentPercentage() == 0) {
         console.log('No bottle left', this.statusBarBottle.getCurrentPercentage());
-        return 0;
+        return 0;//Keine Flaschen mehr da zum werfen
       }
       if (this.throwableObjects.length == 5) {
         this.statusBarBottle.calcNewPercentage('r');//r: Um 20% reduzieren
@@ -66,6 +66,16 @@ class World {
       }
     });
 
+    //enemy scored     
+    this.throwableObjects.forEach((bottle) => {
+      this.level.enemies.forEach((enemy) => {
+        if (bottle.isColliding(enemy)) {
+          let z = this.level.enemies.indexOf(enemy);
+          this.level.enemies.splice(z, 1);
+        }
+      });
+    });
+
     //collect coins
     this.level.moneys.forEach((coin) => {
       if (this.character.isColliding(coin)) {
@@ -82,7 +92,7 @@ class World {
 
     //collect bottles    
     this.level.bottles.forEach((bottle) => {
-      if ((this.statusBarBottle.percentage >= 0 || this.statusBarBottle.percentage < 100)) {
+      if ((this.statusBarBottle.percentage >= 0 && this.statusBarBottle.percentage < 100)) {
         if (this.character.isColliding(bottle)) {
           let z = this.level.bottles.indexOf(bottle);
           this.level.bottles.splice(z, 1);
@@ -90,6 +100,9 @@ class World {
         }
       }
     });
+
+
+
   }
 
 

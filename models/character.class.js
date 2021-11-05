@@ -4,6 +4,7 @@ class Character extends MovableObject {
   width = 90; //Bildbreite
   x = 120; //Standartwert
   y = 80; //Standartwert
+  offsetY = 100;
   speed = 10;
 
   IMAGES_WALKING = [//Bildersequenzen von El Pollo

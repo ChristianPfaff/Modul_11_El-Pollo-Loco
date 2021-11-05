@@ -34,16 +34,16 @@ const level1 = new Level(//Hier werden die Obekte an den Konstruktor übergeben.
 
   ],
   [
-    new MoneyObject(300, 250),
-    new MoneyObject(500, 200),
-    new MoneyObject(700, 250),
-    new MoneyObject(900, 200)
+    new MoneyObject(300, 100),
+    new MoneyObject(600, 150),
+    new MoneyObject(900, 100),
+    new MoneyObject(1200, 150)
   ],
   [
-    new BottleObject(1500, 350),
-    new BottleObject(1700, 350),
-    new BottleObject(1900, 350),
-    new BottleObject(2000, 350),
-    new BottleObject(2100, 350)
+    new BottleObject(1200, 350),
+    new BottleObject(1400, 350),
+    new BottleObject(1600, 350),
+    new BottleObject(1800, 350),
+    new BottleObject(2000, 350)
   ]
 );
