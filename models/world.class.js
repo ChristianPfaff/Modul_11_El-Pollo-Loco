@@ -7,6 +7,7 @@ class World {
   keyboard;
   camera_x = 0;
   foreGround;
+  gameOverImg;
   gameInProgress = false;
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
@@ -16,11 +17,15 @@ class World {
   character = new Character(); //An Variable character wird ein Object zugewiesen, das alle Standartattribute beinhaltet.
   throwableObjects = [];
   numberOfbottle = 5;
+  flag = 0;
+
+
 
   constructor(keyboard) {
     this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);//Für Startbild
+    this.gameOverImg = new GameOverImg(this.canvas.width, this.canvas.height);
     //this.startGame = new StartGameBtn();
     this.keyboard = keyboard;//Tastaturabfrage
     this.setWorld();
@@ -30,12 +35,13 @@ class World {
   }
 
 
+
   setWorld() {
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
   }
 
   run() {
-    setInterval(() => {
+    let interval = setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
     }, 200);
@@ -72,6 +78,9 @@ class World {
         if (bottle.isColliding(enemy)) {
           let z = this.level.enemies.indexOf(enemy);
           this.level.enemies.splice(z, 1);
+          if (z == 3) {
+            this.flag = 1;
+          }
         }
       });
     });
@@ -101,12 +110,11 @@ class World {
       }
     });
 
-
-
   }
 
-
   draw() {
+
+
 
     //"Leinwand" sauber machen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -121,9 +129,16 @@ class World {
 
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
     let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
-    requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
+    let gameReq = requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
       self.draw();
     });
+    if (this.flag) {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.addToMap(this.gameOverImg);//issue game over img            
+      console.log('Game Over');
+      cancelAnimationFrame(gameReq);
+    }
+
   }
 
   drawGameStart() {
@@ -150,7 +165,7 @@ class World {
     this.addToMap(this.character); //Methode: drawImage(); Character auf Bildschirm mit Koord. verschieben
     //chickens
     this.addObjectsToMap(this.level.enemies);
-    //clouds
+    //NOTE Wolken bewegen sich niht       clouds
     this.addObjectsToMap(this.level.clouds);
     //Wurfobjekt
     this.addObjectsToMap(this.throwableObjects);
