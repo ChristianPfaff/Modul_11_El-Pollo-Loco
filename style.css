@@ -6,4 +6,15 @@ body {
 
 canvas {
   background-color: black;
+  display: block;
+}
+
+.canvasStyle {
+  display: flex;
+  flex-direction: column;
+}
+
+.btnStyle {
+  display: flex;
+  justify-content: space-between;
 }

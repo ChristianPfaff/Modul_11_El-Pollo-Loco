@@ -18,11 +18,15 @@ class World {
   throwableObjects = [];
   numberOfbottle = 5;
   flag = 0;
+  fullScreen = false;
+  score_sound = new Audio('audio/score.mp3');
+  shot_sound = new Audio('audio/shot.mp3');
+  gameReq;
 
 
 
   constructor(keyboard) {
-    this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element
+    this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element   
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);//Für Startbild
     this.gameOverImg = new GameOverImg(this.canvas.width, this.canvas.height);
@@ -31,10 +35,7 @@ class World {
     this.setWorld();
     this.run();
     this.draw();
-
   }
-
-
 
   setWorld() {
     this.character.world = this;//character und world sind jetzt miteinander gekoppelt
@@ -60,6 +61,8 @@ class World {
       }
       let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
       this.throwableObjects.push(bottle);
+      this.shot_sound.play();
+
     }
   }
 
@@ -77,9 +80,13 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (bottle.isColliding(enemy)) {
           let z = this.level.enemies.indexOf(enemy);
-          this.level.enemies.splice(z, 1);
-          if (z == 3) {
-            this.flag = 1;
+          if (z == (this.level.enemies.length - 1)) {
+            this.flag = 1;//big chicken is scored
+            this.level.enemies[z].death = true;
+            this.score_sound.play();
+            this.endGame();
+          } else {
+            this.level.enemies.splice(z, 1);
           }
         }
       });
@@ -112,9 +119,28 @@ class World {
 
   }
 
+  endGame() {
+    if (this.flag) {//true then stop game and issue img "game over"        
+      console.log('Game Over');
+      setTimeout(() => {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.addToMap(this.gameOverImg);
+        cancelAnimationFrame(this.gameReq);
+        console.log('setTimeout');
+      }, 10000);
+    }
+  }
+
+
+
+
   draw() {
 
-
+    //full sreen
+    if (this.fullScreen) {
+      document.getElementById('contentOfcanvas').requestFullscreen();
+      this.fullScreen = false;
+    }
 
     //"Leinwand" sauber machen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -129,16 +155,9 @@ class World {
 
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
     let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
-    let gameReq = requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
+    this.gameReq = requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
       self.draw();
     });
-    if (this.flag) {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.addToMap(this.gameOverImg);//issue game over img            
-      console.log('Game Over');
-      cancelAnimationFrame(gameReq);
-    }
-
   }
 
   drawGameStart() {
@@ -165,7 +184,7 @@ class World {
     this.addToMap(this.character); //Methode: drawImage(); Character auf Bildschirm mit Koord. verschieben
     //chickens
     this.addObjectsToMap(this.level.enemies);
-    //NOTE Wolken bewegen sich niht       clouds
+    //clouds
     this.addObjectsToMap(this.level.clouds);
     //Wurfobjekt
     this.addObjectsToMap(this.throwableObjects);

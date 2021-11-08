@@ -32,7 +32,7 @@ class DrawableObjekt {
   * This function stores all images of the array "arr" in the "imageCache"
   * @param {Array} arr - ['img/image1.png','img/image2.png',...] 
   */
-  loadImages(arr) {//Bilder in dem Objet: imageCache laden
+  loadImages(arr) {//Bilder in dem Objekt: imageCache laden
     arr.forEach((path) => {
       let img = new Image();//img wird innerhalb der Methode def. und ist auch nur da gültig und hat nichts mit img ausserhalb zu tun.
       img.src = path;

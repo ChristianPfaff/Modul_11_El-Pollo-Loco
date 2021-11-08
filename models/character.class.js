@@ -46,7 +46,10 @@ class Character extends MovableObject {
   ];
 
   world;//Enthält Referenz zur Klasse world
+  //sounds
   walking_sound = new Audio('audio/el_pollo_loco.mp3');
+  hurt_sound = new Audio('audio/hurt.mp3');
+
 
   constructor() {//Funktion, die es in jeder Klasse gibt. Wird immer als allererstes ausgeführt wenn ein neues Objekt erstellt wird.
     super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png');//s. movable-objekt.class
@@ -89,6 +92,7 @@ class Character extends MovableObject {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
+        this.hurt_sound.play();
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.isAboveGround()) {//Springen
         this.playAnimation(this.IMAGES_JUMPING);
