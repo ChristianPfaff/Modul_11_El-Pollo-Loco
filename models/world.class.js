@@ -131,9 +131,6 @@ class World {
     }
   }
 
-
-
-
   draw() {
 
     //full sreen
@@ -145,13 +142,13 @@ class World {
     //"Leinwand" sauber machen
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    //if (this.gameInProgress) {
-    this.drawGameInProgress();
-    //}
+    if (this.gameInProgress) {
+      this.drawGameInProgress();
+    }
 
-    /* if (!this.gameInProgress) {
+    if (!this.gameInProgress) {
       this.drawGameStart();
-    } */
+    }
 
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
     let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
