@@ -30,7 +30,6 @@ class World {
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);//Für Startbild
     this.gameOverImg = new GameOverImg(this.canvas.width, this.canvas.height);
-    //this.startGame = new StartGameBtn();
     this.keyboard = keyboard;//Tastaturabfrage
     this.setWorld();
     this.run();
@@ -159,6 +158,7 @@ class World {
 
   drawGameStart() {
     this.addToMap(this.foreGround);//Startbild  
+    //cancelAnimationFrame(gameReq);
   }
 
   drawGameInProgress() {
