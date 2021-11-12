@@ -57,8 +57,8 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-    this.applyGravity();
-    this.animate();
+    //this.applyGravity();
+    //this.animate();
   }
 
   //Bilder sollen nacheinander ausgetauscht werden

@@ -5,14 +5,15 @@ let keyboard = new Keyboard(); // Eine Instanz von Keyboard wird angelegt
 
 
 function init() {
-
+  world = new World(keyboard);//Hier ist eine neue Variable (Objekt) world in der eine "neue Welt" angelegt werden kann und bei der Erstellung des Objektes wird keyboard gleich mit gegeben.
 
 }
 
 function startGame() {//Startet Methode in world
-  world = new World(keyboard);//Hier ist eine neue Variable (Objekt) world in der eine "neue Welt" angelegt werden kann und bei der Erstellung des Objektes wird keyboard gleich mit gegeben.
-  world.gameInProgress = true;
+  //world.gameInProgress = true;
+  world.startGame();
 }
+
 function fullScreen() {
   world.fullScreen = true;
 }

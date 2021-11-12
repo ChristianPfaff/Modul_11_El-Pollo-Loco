@@ -10,7 +10,7 @@ class World {
   gameOverImg;
   gameInProgress = false;
   //chicken, clouds, endboss über das Objekt level1 geladen
-  level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.
+  level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.  
   statusBar = new StatusBar();
   statusBarCoin = new StatusBarCoin();
   statusBarBottle = new StatusBarBottle();
@@ -32,8 +32,16 @@ class World {
     this.gameOverImg = new GameOverImg(this.canvas.width, this.canvas.height);
     this.keyboard = keyboard;//Tastaturabfrage
     this.setWorld();
-    this.run();
+    //this.run();
     this.draw();
+  }
+
+  startGame() {
+    this.level.animate();
+    this.run();
+    this.gameInProgress = true;
+    this.character.animate();
+    this.character.applyGravity();
   }
 
   setWorld() {
@@ -61,7 +69,6 @@ class World {
       let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
       this.throwableObjects.push(bottle);
       this.shot_sound.play();
-
     }
   }
 
@@ -126,7 +133,7 @@ class World {
         this.addToMap(this.gameOverImg);
         cancelAnimationFrame(this.gameReq);
         console.log('setTimeout');
-      }, 10000);
+      }, 3000);
     }
   }
 
@@ -157,8 +164,7 @@ class World {
   }
 
   drawGameStart() {
-    this.addToMap(this.foreGround);//Startbild  
-    //cancelAnimationFrame(gameReq);
+    this.addToMap(this.foreGround);//Startbild      
   }
 
   drawGameInProgress() {
@@ -189,7 +195,6 @@ class World {
     this.addObjectsToMap(this.level.moneys);
     //bottle
     this.addObjectsToMap(this.level.bottles);
-
 
     this.ctx.translate(-this.camera_x, 0);//Ursprung von ctx wieder zurück auf den vorherigen Stand usw.
 
