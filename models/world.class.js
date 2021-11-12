@@ -8,6 +8,7 @@ class World {
   camera_x = 0;
   foreGround;
   gameOverImg;
+  lostGameImg;
   gameInProgress = false;
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.  
@@ -30,6 +31,7 @@ class World {
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);//Für Startbild
     this.gameOverImg = new GameOverImg(this.canvas.width, this.canvas.height);
+    this.lostGameImg = new LostGameImg(this.canvas.width, this.canvas.height);
     this.keyboard = keyboard;//Tastaturabfrage
     this.setWorld();
     //this.run();
@@ -78,6 +80,11 @@ class World {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
+        console.log("this.character.energy", this.character.energy);
+        if (this.character.energy == 0) {
+
+          this.lostGame();
+        }
       }
     });
 
@@ -122,19 +129,22 @@ class World {
         }
       }
     });
-
   }
 
   endGame() {
-    if (this.flag) {//true then stop game and issue img "game over"        
-      console.log('Game Over');
+    if (this.flag) {//true then stop game and issue img "game over"       
       setTimeout(() => {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.addToMap(this.gameOverImg);
         cancelAnimationFrame(this.gameReq);
-        console.log('setTimeout');
       }, 3000);
     }
+  }
+
+  lostGame() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.addToMap(this.lostGameImg);
+    cancelAnimationFrame(this.gameReq);
   }
 
   draw() {
