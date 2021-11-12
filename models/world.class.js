@@ -37,6 +37,7 @@ class World {
   }
 
   startGame() {
+    this.character.stopInterval = false;
     this.level.animate();
     this.run();
     this.gameInProgress = true;
@@ -44,8 +45,8 @@ class World {
     this.character.applyGravity();
   }
 
-  stopGame() {
-
+  stopGameInterv() {
+    this.character.stopInterval = true;
   }
 
   setWorld() {

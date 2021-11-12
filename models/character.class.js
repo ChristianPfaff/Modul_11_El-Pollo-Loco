@@ -62,10 +62,14 @@ class Character extends MovableObject {
   }
 
   //Bilder sollen nacheinander ausgetauscht werden
-  animate() {
+  animate(stopInterval) {
 
     //Nach Rechts oder Links maschieren
-    setInterval(() => {
+    let chaInterv1 = setInterval(() => {
+      if (stopInterval) {
+        clearInterval(chaInterv1);
+        clearInterval(chaInterv2);
+      }
       this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
@@ -88,7 +92,7 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     //Bewegungen Peppe 
-    setInterval(() => {
+    let chaInterv2 = setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
@@ -104,6 +108,8 @@ class Character extends MovableObject {
         }
       }
     }, 50);
+
+
   }
 
 

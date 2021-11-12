@@ -26,11 +26,11 @@ class Chicken extends MovableObject {
 
   //Bilder sollen nacheinander ausgetauscht werden damit eine Bewegung simuliert wird
   animate() {
-    setInterval(() => {//Wiederholt sich dauernt
+    let chiInterv1 = setInterval(() => {//Wiederholt sich dauernt
       this.moveLeft();
     }, 1000 / 60);//60 fps nach Links bewegen
 
-    setInterval(() => {
+    let chiInterv2 = setInterval(() => {
       // walk animation
       this.playAnimation(this.IMAGES_WALKING);//s. movable-objekt.class
     }, 200);
