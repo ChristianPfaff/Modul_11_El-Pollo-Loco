@@ -24,8 +24,6 @@ class World {
   shot_sound = new Audio('audio/shot.mp3');
   gameReq;
 
-
-
   constructor(keyboard) {
     this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element   
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
@@ -44,6 +42,10 @@ class World {
     this.gameInProgress = true;
     this.character.animate();
     this.character.applyGravity();
+  }
+
+  stopGame() {
+
   }
 
   setWorld() {
@@ -82,7 +84,6 @@ class World {
         this.statusBar.setPercentage(this.character.energy);
         console.log("this.character.energy", this.character.energy);
         if (this.character.energy == 0) {
-
           this.lostGame();
         }
       }
@@ -148,7 +149,6 @@ class World {
   }
 
   draw() {
-
     //full sreen
     if (this.fullScreen) {
       document.getElementById('contentOfcanvas').requestFullscreen();

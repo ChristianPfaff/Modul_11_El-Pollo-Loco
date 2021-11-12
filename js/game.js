@@ -1,16 +1,16 @@
 //let canvas;
 let world;
 let keyboard = new Keyboard(); // Eine Instanz von Keyboard wird angelegt
-
-
+let level1;
 
 function init() {
+  level1 = getLevel1();
   world = new World(keyboard);//Hier ist eine neue Variable (Objekt) world in der eine "neue Welt" angelegt werden kann und bei der Erstellung des Objektes wird keyboard gleich mit gegeben.
-
 }
 
 function startGame() {//Startet Methode in world
   //world.gameInProgress = true;
+  init();
   world.startGame();
 }
 
