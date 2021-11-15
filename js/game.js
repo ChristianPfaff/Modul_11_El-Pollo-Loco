@@ -10,6 +10,10 @@ function init() {
 
 }
 
+function helpPage() {
+  document.getElementById('helpID').innerHTML = window.open("help-explain.html");
+}
+
 function startGame() {//Startet Methode in world
   //world.gameInProgress = true;
   init();
