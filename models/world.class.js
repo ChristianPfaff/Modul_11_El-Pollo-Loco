@@ -60,7 +60,7 @@ class World {
   }
 
   checkThrowObjects() {
-    if (this.keyboard.D) {
+    if (this.keyboard.D && !this.character.isDead) {//&& !this.character.isDead
       if (this.statusBarBottle.getCurrentPercentage() == 0) {
         console.log('No bottle left', this.statusBarBottle.getCurrentPercentage());
         return 0;//Keine Flaschen mehr da zum werfen
@@ -78,8 +78,9 @@ class World {
 
   checkCollisions() {
     //enemy
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+    for (let i = 0; i < this.level.enemies.length; i++) {
+      let enemy = this.level.enemies[i];
+      if (this.character.isColliding(enemy) && !this.character.isDead()) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
         console.log("this.character.energy", this.character.energy);
@@ -87,21 +88,23 @@ class World {
           this.gameInProgress = false;
           this.gameLost = true;
           console.log('this.gameLost', this.gameLost);
-
+          //this.drawGameLost();
+          //break;
         }
       }
-    });
+    };
 
     //enemy scored     
     this.throwableObjects.forEach((bottle) => {
       this.level.enemies.forEach((enemy) => {
         if (bottle.isColliding(enemy)) {
           let z = this.level.enemies.indexOf(enemy);
-          if (z == (this.level.enemies.length - 1)) {
+          if (z == (this.level.enemies.length - 1)) {//The last chicken in the array is always the big chicken
             this.flag = 1;//big chicken is scored
+            this.gameInProgress = false;
+            this.gameWin = true;
             this.level.enemies[z].death = true;
             this.score_sound.play();
-            this.endGame();
           } else {
             this.level.enemies.splice(z, 1);
           }
@@ -145,16 +148,16 @@ class World {
     }
   }
 
-  lostGame() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.addToMap(this.lostGameImg);
-    this.clearAllInterval();
-    cancelAnimationFrame(this.gameReq);
-  }
+  /*  lostGame() {
+     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+     this.addToMap(this.lostGameImg);
+     this.clearAllInterval();
+     cancelAnimationFrame(this.gameReq);
+   } */
 
-  clearAllInterval() {
-    clearInterval(this.checkInterval);
-  }
+  /*  clearAllInterval() {
+     clearInterval(this.checkInterval);
+   } */
 
   draw() {
     //full sreen
@@ -168,32 +171,28 @@ class World {
 
     if (this.gameInProgress) {
       this.drawGameInProgress();
-    }
-
-    if (!this.gameInProgress) {
-      if (this.gameLost) {
-        this.drawGameLost();
-      }
-      if (this.gameWin) {
-        this.drawGameWin();
-      }
-    }
-
-    if (!this.gameInProgress) {
+    } else if (this.gameLost) {
+      this.drawGameLost();
+    } else if (this.gameWin) {
+      this.drawGameWin();
+    } else {
       this.drawGameStart();
     }
-
 
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
     let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
     this.gameReq = requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
       self.draw();
     });
+  }
 
+  drawGameWin() {
+    this.addToMap(this.gameOverImg);
   }
 
   drawGameLost() {
-    this.lostGame();
+    //this.lostGame();
+    this.addToMap(this.lostGameImg);//Img if game is lost
   }
 
   drawGameStart() {

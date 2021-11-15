@@ -47,7 +47,7 @@ class MovableObject extends DrawableObjekt {
   }
 
   isDead() {
-    return this.energy == 0;
+    return this.energy == 0;//This is an abbreviation for if-conditional
   }
 
   playAnimation(images) {
