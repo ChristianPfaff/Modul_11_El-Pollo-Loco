@@ -10,6 +10,8 @@ class World {
   gameOverImg;
   lostGameImg;
   gameInProgress = false;
+  gameLost = false;
+  gameWin = false;
 
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.  
@@ -35,10 +37,7 @@ class World {
     this.setWorld();
     this.draw();
 
-
   }
-
-
 
   startGame() {
     this.level.animate();
@@ -54,7 +53,7 @@ class World {
   }
 
   run() {
-    let interval = setInterval(() => {
+    this.checkInterval = setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
     }, 200);
@@ -85,7 +84,10 @@ class World {
         this.statusBar.setPercentage(this.character.energy);
         console.log("this.character.energy", this.character.energy);
         if (this.character.energy == 0) {//lost game
-          this.lostGame();
+          this.gameInProgress = false;
+          this.gameLost = true;
+          console.log('this.gameLost', this.gameLost);
+
         }
       }
     });
@@ -151,13 +153,10 @@ class World {
   }
 
   clearAllInterval() {
-    for (let i = 1; i < 100; i++) {
-      clearInterval(i);
-    }
+    clearInterval(this.checkInterval);
   }
 
   draw() {
-
     //full sreen
     if (this.fullScreen) {
       document.getElementById('contentOfcanvas').requestFullscreen();
@@ -172,8 +171,18 @@ class World {
     }
 
     if (!this.gameInProgress) {
+      if (this.gameLost) {
+        this.drawGameLost();
+      }
+      if (this.gameWin) {
+        this.drawGameWin();
+      }
+    }
+
+    if (!this.gameInProgress) {
       this.drawGameStart();
     }
+
 
     //draw(); Wird immer wieder aufgerufen(je nach Grafikarte 10 - 25 fps). Grund: Die load-Fkt braucht Zeit zum laden d. Bildes und draw() wird aber inzwischen aufgerufen, obwohl des Bild noch nicht geladen ist.
     let self = this; //Aus irgendwelchen Gründen, kann man nicht schreiben: this.self.draw() in der Funk "requestAnimationFrame"; Mit dem hack (techn. Kniff),also zuerst dem slef das Keywort "this" ausserhalb von requestAnimationFrame zuweisen funktioniert es! - Warum das so ist weiß niemand! Einfach so akzeptieren!
@@ -181,6 +190,10 @@ class World {
       self.draw();
     });
 
+  }
+
+  drawGameLost() {
+    this.lostGame();
   }
 
   drawGameStart() {
