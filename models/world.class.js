@@ -10,6 +10,7 @@ class World {
   gameOverImg;
   lostGameImg;
   gameInProgress = false;
+
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.  
   statusBar = new StatusBar();
@@ -32,21 +33,20 @@ class World {
     this.lostGameImg = new LostGameImg(this.canvas.width, this.canvas.height);
     this.keyboard = keyboard;//Tastaturabfrage
     this.setWorld();
-    //this.run();
     this.draw();
+
+
   }
 
+
+
   startGame() {
-    this.character.stopInterval = false;
     this.level.animate();
     this.run();
     this.gameInProgress = true;
     this.character.animate();
     this.character.applyGravity();
-  }
 
-  stopGameInterv() {
-    this.character.stopInterval = true;
   }
 
   setWorld() {
@@ -84,7 +84,7 @@ class World {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
         console.log("this.character.energy", this.character.energy);
-        if (this.character.energy == 0) {
+        if (this.character.energy == 0) {//lost game
           this.lostGame();
         }
       }
@@ -146,10 +146,18 @@ class World {
   lostGame() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.addToMap(this.lostGameImg);
+    this.clearAllInterval();
     cancelAnimationFrame(this.gameReq);
   }
 
+  clearAllInterval() {
+    for (let i = 1; i < 100; i++) {
+      clearInterval(i);
+    }
+  }
+
   draw() {
+
     //full sreen
     if (this.fullScreen) {
       document.getElementById('contentOfcanvas').requestFullscreen();
@@ -172,6 +180,7 @@ class World {
     this.gameReq = requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
       self.draw();
     });
+
   }
 
   drawGameStart() {

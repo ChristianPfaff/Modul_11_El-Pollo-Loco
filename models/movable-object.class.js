@@ -7,7 +7,6 @@ class MovableObject extends DrawableObjekt {
   energy = 100;
   lastHit = 0;
   offsetY = 0;
-  stopInterval = false;
 
   applyGravity() {
     setInterval(() => {

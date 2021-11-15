@@ -65,11 +65,8 @@ class Character extends MovableObject {
   animate(stopInterval) {
 
     //Nach Rechts oder Links maschieren
-    let chaInterv1 = setInterval(() => {
-      if (stopInterval) {
-        clearInterval(chaInterv1);
-        clearInterval(chaInterv2);
-      }
+    setInterval(() => {
+
       this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
@@ -92,7 +89,7 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     //Bewegungen Peppe 
-    let chaInterv2 = setInterval(() => {
+    setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
