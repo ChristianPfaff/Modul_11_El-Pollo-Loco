@@ -13,4 +13,9 @@ class Level {
     this.moneys = moneys;
     this.bottles = bottles;
   }
+
+  animate() {
+    this.enemies.forEach(e => e.animate());
+    this.clouds.forEach(c => c.animate());
+  }
 }

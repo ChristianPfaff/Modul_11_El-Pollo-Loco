@@ -18,7 +18,7 @@ class Chicken extends MovableObject {
 
     this.x = 200 + Math.random() * 500;//Zufällige Pos. in x-Richtung. Mit Math.random wird zufällig eine Zahl zwischen 0...1 ausgewält. Zahl ist hier also zwischen 200 und 700.
     this.speed = 0.15 + Math.random() * 0.25;//Zufällige Geschwindigkeit
-    this.animate();
+    //this.animate();
 
   }
 
@@ -30,7 +30,7 @@ class Chicken extends MovableObject {
       this.moveLeft();
     }, 1000 / 60);//60 fps nach Links bewegen
 
-    setInterval(() => {
+    let chiInterv2 = setInterval(() => {
       // walk animation
       this.playAnimation(this.IMAGES_WALKING);//s. movable-objekt.class
     }, 200);

@@ -57,15 +57,16 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-    this.applyGravity();
-    this.animate();
+    //this.applyGravity();
+    //this.animate();
   }
 
   //Bilder sollen nacheinander ausgetauscht werden
-  animate() {
+  animate(stopInterval) {
 
     //Nach Rechts oder Links maschieren
     setInterval(() => {
+
       this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
@@ -104,6 +105,8 @@ class Character extends MovableObject {
         }
       }
     }, 50);
+
+
   }
 
 

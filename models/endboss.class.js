@@ -31,7 +31,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);//s. movable-objekt.class;
     this.loadImages(this.IMAGES_DEATH);
     this.x = 2500;
-    this.animate();
+    //this.animate();
   }
 
   //Bilder sollen nacheinander ausgetauscht werden damit eine Bewegung simuliert wird
