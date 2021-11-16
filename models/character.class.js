@@ -62,7 +62,7 @@ class Character extends MovableObject {
   }
 
   //Bilder sollen nacheinander ausgetauscht werden
-  animate(stopInterval) {
+  animate() {
 
     //Nach Rechts oder Links maschieren
     setInterval(() => {

@@ -60,7 +60,7 @@ class World {
   }
 
   checkThrowObjects() {
-    if (this.keyboard.D && !this.character.isDead) {//&& !this.character.isDead
+    if (this.keyboard.D && !this.character.isDead()) {
       if (this.statusBarBottle.getCurrentPercentage() == 0) {
         console.log('No bottle left', this.statusBarBottle.getCurrentPercentage());
         return 0;//Keine Flaschen mehr da zum werfen
@@ -77,36 +77,38 @@ class World {
   }
 
   checkCollisions() {
-    //enemy
+    //Is character dead?
+    if (this.character.isDead()) {//lost game
+      this.gameInProgress = false;
+      this.gameLost = true;
+      console.log('this.gameLost', this.gameLost);
+      this.clearAllInterval();
+    }
+
+    //Is character hit?
     for (let i = 0; i < this.level.enemies.length; i++) {
       let enemy = this.level.enemies[i];
       if (this.character.isColliding(enemy) && !this.character.isDead()) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
         console.log("this.character.energy", this.character.energy);
-        if (this.character.energy == 0) {//lost game
-          this.gameInProgress = false;
-          this.gameLost = true;
-          console.log('this.gameLost', this.gameLost);
-          //this.drawGameLost();
-          //break;
-        }
       }
     };
 
-    //enemy scored     
+    //enemy scored?     
     this.throwableObjects.forEach((bottle) => {
       this.level.enemies.forEach((enemy) => {
-        if (bottle.isColliding(enemy)) {
-          let z = this.level.enemies.indexOf(enemy);
-          if (z == (this.level.enemies.length - 1)) {//The last chicken in the array is always the big chicken
-            this.flag = 1;//big chicken is scored
-            this.gameInProgress = false;
-            this.gameWin = true;
-            this.level.enemies[z].death = true;
-            this.score_sound.play();
+        if (!enemy.isDead() && !enemy.isHurt() && bottle.isColliding(enemy)) {
+          if (enemy instanceof Endboss) {//Endboss is scored
+            enemy.kill();//Energy of Endboss is set to zero
+            this.gameWin = enemy.isDead();//(boolean) Switch PlayAnimation in Endboss
+            if (this.gameWin) {
+              setTimeout(() => {
+                this.drawGameInProgress = false;
+              }, 2000);
+            }
           } else {
-            this.level.enemies.splice(z, 1);
+            this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
           }
         }
       });
@@ -138,26 +140,9 @@ class World {
     });
   }
 
-  endGame() {
-    if (this.flag) {//true then stop game and issue img "game over"       
-      setTimeout(() => {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.addToMap(this.gameOverImg);
-        cancelAnimationFrame(this.gameReq);
-      }, 3000);
-    }
+  clearAllInterval() {
+    clearInterval(this.checkInterval);
   }
-
-  /*  lostGame() {
-     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-     this.addToMap(this.lostGameImg);
-     this.clearAllInterval();
-     cancelAnimationFrame(this.gameReq);
-   } */
-
-  /*  clearAllInterval() {
-     clearInterval(this.checkInterval);
-   } */
 
   draw() {
     //full sreen
@@ -187,12 +172,11 @@ class World {
   }
 
   drawGameWin() {
-    this.addToMap(this.gameOverImg);
+    this.addToMap(this.gameOverImg);//If game is win    
   }
 
   drawGameLost() {
-    //this.lostGame();
-    this.addToMap(this.lostGameImg);//Img if game is lost
+    this.addToMap(this.lostGameImg);//If game is lost
   }
 
   drawGameStart() {

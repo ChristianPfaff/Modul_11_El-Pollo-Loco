@@ -16,6 +16,7 @@ function helpPage() {
 function startGame() {//Startet Methode in world
   init();
   world.startGame();
+  //document.getElementById('startID').button.disabled = true;
 }
 
 function fullScreen() {
