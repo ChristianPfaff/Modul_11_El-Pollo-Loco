@@ -46,8 +46,12 @@ class MovableObject extends DrawableObjekt {
     return timepassed < 1; //Wird als "true" bewertet (truthy)
   }
 
+  kill() {
+    this.energy = 0;
+  }
+
   isDead() {
-    return this.energy == 0;
+    return this.energy == 0;//This is an abbreviation for if-conditional
   }
 
   playAnimation(images) {

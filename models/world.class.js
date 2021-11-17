@@ -10,6 +10,8 @@ class World {
   gameOverImg;
   lostGameImg;
   gameInProgress = false;
+  gameLost = false;
+  gameWin = false;
 
   //chicken, clouds, endboss über das Objekt level1 geladen
   level = level1;//"level1" ist eine globale Variable und wurde schon, bevor "world" aufgerufen wurde, erzeugt.  
@@ -35,12 +37,10 @@ class World {
     this.setWorld();
     this.draw();
 
-
   }
 
-
-
   startGame() {
+    document.getElementById('startID').blur();
     this.level.animate();
     this.run();
     this.gameInProgress = true;
@@ -54,14 +54,15 @@ class World {
   }
 
   run() {
-    let interval = setInterval(() => {
+    this.checkInterval = setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
     }, 200);
   }
 
   checkThrowObjects() {
-    if (this.keyboard.D) {
+    this.shot_sound.pause();
+    if (this.keyboard.D && !this.character.isDead()) {
       if (this.statusBarBottle.getCurrentPercentage() == 0) {
         console.log('No bottle left', this.statusBarBottle.getCurrentPercentage());
         return 0;//Keine Flaschen mehr da zum werfen
@@ -78,30 +79,39 @@ class World {
   }
 
   checkCollisions() {
-    //enemy
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+    //Is character dead?
+    if (this.character.isDead()) {//lost game
+      this.gameInProgress = false;
+      this.gameLost = true;
+      console.log('this.gameLost', this.gameLost);
+      this.clearAllInterval();
+    }
+
+    //Is character hit?
+    for (let i = 0; i < this.level.enemies.length; i++) {
+      let enemy = this.level.enemies[i];
+      if (this.character.isColliding(enemy) && !this.character.isDead()) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
         console.log("this.character.energy", this.character.energy);
-        if (this.character.energy == 0) {//lost game
-          this.lostGame();
-        }
       }
-    });
+    };
 
-    //enemy scored     
+    //enemy scored?     
     this.throwableObjects.forEach((bottle) => {
       this.level.enemies.forEach((enemy) => {
-        if (bottle.isColliding(enemy)) {
-          let z = this.level.enemies.indexOf(enemy);
-          if (z == (this.level.enemies.length - 1)) {
-            this.flag = 1;//big chicken is scored
-            this.level.enemies[z].death = true;
-            this.score_sound.play();
-            this.endGame();
+        if (!enemy.isDead() && !enemy.isHurt() && bottle.isColliding(enemy)) {
+          if (enemy instanceof Endboss) {//Endboss is scored
+            enemy.kill();//Energy of Endboss is set to zero
+            this.gameWin = enemy.isDead();//(boolean) Switch PlayAnimation in Endboss
+            this.score_sound.play()
+            if (this.gameWin) {
+              setTimeout(() => {
+                this.gameInProgress = false;
+              }, 3000);
+            }
           } else {
-            this.level.enemies.splice(z, 1);
+            this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
           }
         }
       });
@@ -133,31 +143,11 @@ class World {
     });
   }
 
-  endGame() {
-    if (this.flag) {//true then stop game and issue img "game over"       
-      setTimeout(() => {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.addToMap(this.gameOverImg);
-        cancelAnimationFrame(this.gameReq);
-      }, 3000);
-    }
-  }
-
-  lostGame() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.addToMap(this.lostGameImg);
-    this.clearAllInterval();
-    cancelAnimationFrame(this.gameReq);
-  }
-
   clearAllInterval() {
-    for (let i = 1; i < 100; i++) {
-      clearInterval(i);
-    }
+    clearInterval(this.checkInterval);
   }
 
   draw() {
-
     //full sreen
     if (this.fullScreen) {
       document.getElementById('contentOfcanvas').requestFullscreen();
@@ -169,9 +159,11 @@ class World {
 
     if (this.gameInProgress) {
       this.drawGameInProgress();
-    }
-
-    if (!this.gameInProgress) {
+    } else if (this.gameLost) {
+      this.drawGameLost();
+    } else if (this.gameWin) {
+      this.drawGameWin();
+    } else {
       this.drawGameStart();
     }
 
@@ -180,7 +172,14 @@ class World {
     this.gameReq = requestAnimationFrame(function () {//Diese Funktion wird von der Grafikkarte ausgeführt.
       self.draw();
     });
+  }
 
+  drawGameWin() {
+    this.addToMap(this.gameOverImg);//If game is win    
+  }
+
+  drawGameLost() {
+    this.addToMap(this.lostGameImg);//If game is lost
   }
 
   drawGameStart() {

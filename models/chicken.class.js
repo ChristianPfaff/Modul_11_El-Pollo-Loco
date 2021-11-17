@@ -30,7 +30,7 @@ class Chicken extends MovableObject {
       this.moveLeft();
     }, 1000 / 60);//60 fps nach Links bewegen
 
-    let chiInterv2 = setInterval(() => {
+    setInterval(() => {
       // walk animation
       this.playAnimation(this.IMAGES_WALKING);//s. movable-objekt.class
     }, 200);
