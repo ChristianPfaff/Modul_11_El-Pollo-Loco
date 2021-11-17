@@ -9,14 +9,13 @@ function init() {
   world = new World(keyboard);//Hier ist eine neue Variable (Objekt) world in der eine "neue Welt" angelegt werden kann und bei der Erstellung des Objektes wird keyboard gleich mit gegeben.
 }
 
-function helpPage() {
-  document.getElementById('helpID').innerHTML = window.open("help-explain.html");
+function helpPage() {//Started help side
+  window.open("help-explain.html");
 }
 
 function startGame() {//Startet Methode in world
   init();
   world.startGame();
-  //document.getElementById('startID').button.disabled = true;
 }
 
 function fullScreen() {

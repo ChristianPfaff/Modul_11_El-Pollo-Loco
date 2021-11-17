@@ -40,6 +40,7 @@ class World {
   }
 
   startGame() {
+    document.getElementById('startID').blur();
     this.level.animate();
     this.run();
     this.gameInProgress = true;
@@ -60,6 +61,7 @@ class World {
   }
 
   checkThrowObjects() {
+    this.shot_sound.pause();
     if (this.keyboard.D && !this.character.isDead()) {
       if (this.statusBarBottle.getCurrentPercentage() == 0) {
         console.log('No bottle left', this.statusBarBottle.getCurrentPercentage());
@@ -102,10 +104,11 @@ class World {
           if (enemy instanceof Endboss) {//Endboss is scored
             enemy.kill();//Energy of Endboss is set to zero
             this.gameWin = enemy.isDead();//(boolean) Switch PlayAnimation in Endboss
+            this.score_sound.play()
             if (this.gameWin) {
               setTimeout(() => {
-                this.drawGameInProgress = false;
-              }, 2000);
+                this.gameInProgress = false;
+              }, 3000);
             }
           } else {
             this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
