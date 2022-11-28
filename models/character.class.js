@@ -48,7 +48,7 @@ class Character extends MovableObject {
   world;//Enthält Referenz zur Klasse world
   //sounds
   walking_sound = new Audio('audio/el_pollo_loco.mp3');
-  hurt_sound = new Audio('audio/hurt.mp3');
+  hurt_sound = new Audio('audio/hurt2.mp3');
 
 
   constructor() {//Funktion, die es in jeder Klasse gibt. Wird immer als allererstes ausgeführt wenn ein neues Objekt erstellt wird.

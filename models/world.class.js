@@ -26,17 +26,17 @@ class World {
   score_sound = new Audio('audio/score.mp3');
   shot_sound = new Audio('audio/shot.mp3');
   gameReq;
+  dessert_sound = new Audio('audio/dessertMusic.mp3'); //Hintergrundmusik  
 
   constructor(keyboard) {
     this.canvas = document.getElementById('canvas');//Achtung: Hier ist canvas der ID Name vom Div-Element   
     this.ctx = canvas.getContext('2d');//Auf ctx wir letztendlich gemalt
     this.foreGround = new ForegroundObjekt(this.canvas.width, this.canvas.height);//Für Startbild
     this.gameOverImg = new GameOverImg(this.canvas.width, this.canvas.height);
-    this.lostGameImg = new LostGameImg(this.canvas.width, this.canvas.height);
+    this.lostGameImg = new LostGameImg(this.canvas.width, this.canvas.height);    
     this.keyboard = keyboard;//Tastaturabfrage
     this.setWorld();
     this.draw();
-
   }
 
   startGame() {
@@ -46,7 +46,21 @@ class World {
     this.gameInProgress = true;
     this.character.animate();
     this.character.applyGravity();
+    this.backMusic(); //Startet Hintergrundmusik  
+  }
 
+  backMusic() { 
+        
+      this.dessert_sound.volume = 0.1;
+
+      let dessertInterval = setInterval(()=> {        
+        this.dessert_sound.play();
+
+        if(this.gameLost || this.gameWin ){ 
+          this.dessert_sound.pause();
+          clearInterval(dessertInterval);
+        }
+      });             
   }
 
   setWorld() {
@@ -230,7 +244,7 @@ class World {
       this.flipImage(mo);
     }
     mo.draw(this.ctx);
-    mo.drawFrame(this.ctx);//Recheck um Objekt
+    //mo.drawFrame(this.ctx);//Recheck um Objekt
 
     //Wenn true dann urspr. canvas-Einstellungen wieder herstellen
     if (mo.otherDirection) {
